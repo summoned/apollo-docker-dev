@@ -1,0 +1,46 @@
+version '3'
+services:
+	mysql-service:
+		images: "mysql:5.7"
+		container_name: mysql-service
+		ports:
+			- "3306:3306"
+		environment:
+			- MYSQL_ROOT_PASSWORD=kuxopZpfq6:X
+		volumes:
+			- "/Users/didi/mysql:/var/lib/mysql"
+			- "/Users/didi/apollo_mysql_scripts:/opt/mysql/scripts"
+
+	apollo-configservice:
+		images: "apollo-configservice"
+		container_name: apollo-configservice
+		ports:
+			- "8080:8080"
+		volumes:
+			- "/opt/logs/configservice:/opt/logs"
+		links:
+			- mysql-service
+
+	apollo-adminservice:
+		images: "apollo-adminservice"
+		container_name: apollo-adminservice
+		ports:
+			- "8090:8090"
+		volumes:
+			- "/opt/logs/adminservice:/opt/logs"
+		environment:
+			- eureka.service.url=http://apollo-configservice:8080/eureka/
+		links:
+			- mysql-service
+			- apollo-configservice
+
+	apollo-portal:
+		images: "apollo-portal"
+		container_name: apollo-portal
+		ports:
+			- "8070:8070"
+		volumes:
+			- "/opt/logs/portal:/opt/logs"
+		links:
+			- mysql-service
+			- apollo-configservice
