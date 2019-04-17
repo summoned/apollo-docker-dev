@@ -21,8 +21,6 @@ services:
     - "8080:8080"
     volumes:
     - "/opt/logs/configservice:/opt/logs"
-    #links:
-    #- mysql-service
 
   apollo-adminservice:
     image: "apollo-adminservice"
@@ -36,9 +34,6 @@ services:
     - "/opt/logs/adminservice:/opt/logs"
     environment:
     - eureka.service.url=http://apollo-configservice:8080/eureka/
-    #links:
-    #- mysql-service
-    #- apollo-configservice
 
   apollo-portal:
     image: "apollo-portal"
@@ -50,6 +45,3 @@ services:
     - "8070:8070"
     volumes:
     - "/opt/logs/portal:/opt/logs"
-    #links:
-    #- mysql-service
-    #- apollo-configservice
